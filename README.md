@@ -14,3 +14,7 @@ Run it with:
 var html2js = new Html2js();
 var script = html2js.convert('<p>my html</p>');
 ```
+
+\
+\
+Use it [Here](http://arnoneilat.github.io/HTML2JS/).
