@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HTML2JS</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="codemirror-4.7/lib/codemirror.css" />
+  <link rel="stylesheet" type="text/css" href="codemirror-4.7/theme/mbo.css">
+  <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+</head>
+
+<body>
+
+  <a href="https://github.com/ArnonEilat/HTML2JS"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+  <div class="container">
+    <h2>HTML to JavaScript Convertor</h2>
+    <p>Convert HTML to JavaScript code</p>
+    <textarea id="HTMLInput" class="form-control" rows="10" cols="55" placeholder="HTML code">
+<div id="im-div" contentEditable="true" style="position: absolute; left: 0px; top: 45px;">
+  Test class, attributes and style.
+</div>
+
+<section class="class test" data-name="name" data-id="1234">
+  <h4>title</h4>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam egestas augue nisi, eget vehicula tellus bibendum eu. Praesent in tellus eget arcu sollicitudin viverra. Nunc fermentum, sem eu ullamcorper tempus, lectus lectus ornare elit, id consectetur
+  enim purus eu ligula. Quisque quis ligula enim.
+  <a href="#" target="_blank">go to link</a>
+  Integer ut massa a ante condimentum condimentum. Vestibulum in sodales metus. Vestibulum vitae neque vitae ipsum lobortis elementum non et ipsum. Proin fermentum velit id orci ultrices, eu viverra risus tincidunt. Curabitur ac efficitur risus. Duis molestie
+  fermentum tellus, ut sollicitudin ante volutpat a.
+</section>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+<br>Aliquam egestas augue nisi, eget vehicula tellus bibendum eu.
+
+
+<span>
+  <span>
+    <span>
+      <span>
+        <span>
+          <span>
+            <span>
+              <span>
+                <span>
+                  Nested elements
+                </span>
+              </span>
+            </span>
+          </span>
+        </span>
+      </span>
+    </span>
+  </span>
+</span>
+
+
+<script type="text/javascript">
+  alert('single quote');
+  alert("double quote");
+</script>
+</textarea>
+    <br>
+    <div class="row">
+      <div role="form" class="form-inline">
+        <div class="form-group col-md-3">
+          <div class="input-group">
+            <label class="input-group-addon" for="rootElement">Root Element</label>
+            <input type="text" value="document.body" class="form-control" id="rootElement" placeholder="Root Element">
+          </div>
+        </div>
+        <div class="form-group">
+          <button id="convertBtn" class="form-control btn btn-default">Convert to javascript</button>
+        </div>
+
+        <div class="form-group pull-right">
+          <label for="variables-name" class="ull-right">Variables Name </label>
+          <select class="form-control" id="variables-name">
+            <option value="byElementClue">By Element Clue</option>
+            <option value="haiku">Haiku</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+    <br>
+    <textarea id="jsOutput" class="form-control" rows="10" cols="55" placeholder="javaScript code"></textarea>
+  </div>
+  <script type="application/javascript" src="codemirror-4.7/lib/codemirror.js"></script>
+  <script type="application/javascript" src="codemirror-4.7/mode/xml/xml.js"></script>
+  <script type="application/javascript" src="codemirror-4.7/mode/javascript/javascript.js"></script>
+  <script type="application/javascript" src="codemirror-4.7/mode/css/css.js"></script>
+  <script type="application/javascript" src="codemirror-4.7/mode/htmlmixed/htmlmixed.js"></script>
+  <script type="application/javascript" src="codemirror-4.7/mode/htmlembedded/htmlembedded.js"></script>
+  <script type="application/javascript" src="codemirror-4.7/addon/selection/active-line.js"></script>
+  <script type="application/javascript" src="HTML2JS/utill.js"></script>
+  <script type="application/javascript" src="HTML2JS/namer.js"></script>
+  <script type="application/javascript" src="HTML2JS/html2js.js"></script>
+  <script type="application/javascript" src="index.js"></script>
+</body>
+
+</html>
