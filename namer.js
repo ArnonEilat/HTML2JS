@@ -66,6 +66,11 @@ function Namer() {
 
 
   var getNameByElement = function(element) {
+    //reuse var if no children elements, smaller JS stack
+    //textContent is prop assign, not an appendChild
+    if(element.children.length == 0) {
+        return base;
+    }
     // Get name by id
     if (typeof element.id !== 'undefined' && element.id !== '' && !isInUse(element.id)) {
       var name = element.id.camelize();
@@ -105,6 +110,18 @@ function Namer() {
     counter++;
     usedNames[base + counter] = true;
     return base + counter;
+  };
+
+  this.purgeName = function(name) {
+    //dont purge the 0 children node, no counter name
+    if(name.indexOf(base) == 0 && name.length > base.length) {
+        if(name != base + counter) {
+            debugger;
+            throw("purging wrong usedName entry");
+        }
+        delete usedNames[base + counter];
+        counter--;
+    }
   };
 
   var NAMES_TYPE = {
