@@ -11,6 +11,7 @@ var Html2js = function() {
   var finalResult = '';
   var namer;
   var q = '\'';
+  var usedNames = {};
 
   /***
    * @description Convert htmlString to equivalent javaScript code.
@@ -37,7 +38,7 @@ var Html2js = function() {
     var treeObject = {};
     var docNode;
     if (typeof rootElement !== 'string' || rootElement.length < 1)
-      rootElement = 'document.body';
+      rootElement = 'fragment';
 
     if (typeof elementStr === 'string') { // If string convert to document Node
       var parser = new DOMParser();
@@ -47,8 +48,8 @@ var Html2js = function() {
     } else
       throw 'invalid argument supply';
 
-    for (var i = 0; i < docNode.body.childNodes.length; i++) {
-      treeHTML(docNode.body.childNodes[i], rootElement);
+    for (var i = 0; i < docNode.documentElement.childNodes.length; i++) {
+      treeHTML(docNode.documentElement.childNodes[i], rootElement);
     }
   }
 
@@ -95,27 +96,29 @@ var Html2js = function() {
           }
           break;
         default:
-          var nodeValue = element.attributes[i].nodeValue;
-          if (nodeValue.toLowerCase() === 'tabindex')
-            nodeValue = 'tabIndex';
-          else if (nodeValue.toLowerCase() === 'offsetwidth')
-            nodeValue = 'offsetWidth';
-          else if (nodeValue.toLowerCase() === 'offsetheight')
-            nodeValue = 'offsetHeight';
-          else if (nodeValue.toLowerCase() === 'offsetleft')
-            nodeValue = 'offsetLeft';
-          else if (nodeValue.toLowerCase() === 'offsetparent')
-            nodeValue = 'offsetParent';
-          else if (nodeValue.toLowerCase() === 'offsettop')
-            nodeValue = 'offsetTop';
-          else if (nodeValue.toLowerCase() === 'iscontenteditable')
-            nodeValue = 'isContentEditable';
-          else if (nodeValue.toLowerCase() === 'contenteditable')
-            nodeValue = 'contentEditable';
-          else if (nodeValue.toLowerCase() === 'accesskey')
-            nodeValue = 'accessKey';
+          var nodeName = element.attributes[i].nodeName;
+          if (nodeName.toLowerCase() === 'tabindex')
+            nodeName = 'tabIndex';
+          else if (nodeName.toLowerCase() === 'offsetwidth')
+            nodeName = 'offsetWidth';
+          else if (nodeName.toLowerCase() === 'offsetheight')
+            nodeName = 'offsetHeight';
+          else if (nodeName.toLowerCase() === 'offsetleft')
+            nodeName = 'offsetLeft';
+          else if (nodeName.toLowerCase() === 'offsetparent')
+            nodeName = 'offsetParent';
+          else if (nodeName.toLowerCase() === 'offsettop')
+            nodeName = 'offsetTop';
+          else if (nodeName.toLowerCase() === 'iscontenteditable')
+            nodeName = 'isContentEditable';
+          else if (nodeName.toLowerCase() === 'contenteditable')
+            nodeName = 'contentEditable';
+          else if (nodeName.toLowerCase() === 'accesskey')
+            nodeName = 'accessKey';
+        //convert things like http-equiv to httpEquiv
+         nodeName = nodeName.toLowerCase().replace(/-\w/g, function(t){return t.substr(1).toUpperCase()});
 
-          finalResult += name + '.' + element.attributes[i].nodeName + ' = ' + q + nodeValue + q + ';\n';
+          finalResult += name + '.' + nodeName + ' = ' + q + element.attributes[i].nodeValue + q + ';\n';
       }
     }
 
@@ -145,17 +148,18 @@ var Html2js = function() {
   function treeHTML(element, parentName) {
     var nodeList = element.childNodes;
     var myName = namer.getName(element);
+    var varPrefix = usedNames[myName] ? '' : 'var ';
+    usedNames[myName] = true;
 
     if (element.nodeType === NODE_TYPE.TEXT_NODE && element.nodeValue.trim() !== '') {
       finalResult += parentName + '.appendChild(document.createTextNode(' + quotesText(element.nodeValue.trim()) + '));\n';
     } else {
-      finalResult += 'var ' + myName + ' = document.createElement(' + q + element.nodeName + q + ');\n';
+      finalResult += varPrefix + myName + ' = ' + parentName + '.appendChild(document.createElement(' + q + element.nodeName + q + '));\n';
 
       if (typeof element.attributes !== 'undefined') {
         if (element.attributes.length)
           appendAttributes(element, myName);
       }
-      finalResult += parentName + '.appendChild(' + myName + ');\n';
     }
 
     if (nodeList !== null && nodeList.length) {
@@ -173,5 +177,6 @@ var Html2js = function() {
         }
       }
     }
+    namer.purgeName(myName);
   }
 }
