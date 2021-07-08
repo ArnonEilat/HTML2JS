@@ -68,7 +68,7 @@ function Namer() {
   var getNameByElement = function(element) {
     //reuse var if no children elements, smaller JS stack
     //textContent is prop assign, not an appendChild
-    if(element.children.length == 0) {
+    if(element.childNodes.length == 0) {
         return base;
     }
     // Get name by id
